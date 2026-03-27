@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧱 Fase 1 - Configuración Base del Proyecto
 
-## Getting Started
+En esta fase se estableció la arquitectura base del proyecto utilizando **Next.js con App Router**, junto con herramientas modernas para manejo de estado y datos asincrónicos.
 
-First, run the development server:
+El objetivo principal es contar con una base sólida, escalable y organizada que facilite el desarrollo de las siguientes funcionalidades.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📁 Estructura de Carpetas
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Ubicación: `src/`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* `app/` → Contiene las rutas de la aplicación (pages y layouts).
+* `components/` → Componentes reutilizables de UI.
+* `hooks/` → Hooks personalizados para lógica reutilizable.
+* `lib/` → Funciones utilitarias y helpers (por ejemplo, manejo de peticiones HTTP).
+* `providers/` → Proveedores globales de la aplicación.
+* `services/` → Funciones encargadas de consumir APIs externas.
+* `store/` → Manejo de estado global con Zustand.
+* `types/` → Definición de tipos globales con TypeScript.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## ⚙️ Configuración de React Query
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+📄 Ubicación: `src/providers/query-provider.tsx`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Se implementa un proveedor global para **React Query**, encargado de gestionar:
 
-## Deploy on Vercel
+* Peticiones asincrónicas
+* Cache de datos
+* Estados de carga, error y éxito
+* Optimización de refetch
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Este provider permite centralizar el manejo de datos en toda la aplicación.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🌐 Layout Global
+
+📄 Ubicación: `src/app/layout.tsx`
+
+Archivo principal que envuelve toda la aplicación.
+
+Aquí se integra el provider de React Query, permitiendo que todos los componentes y páginas tengan acceso a sus funcionalidades.
+
+---
+
+## 🧠 Estado Global (Zustand)
+
+📄 Ubicación: `src/store/auth.store.ts`
+
+Se define un store global para manejar el estado de autenticación de la aplicación.
+
+Responsabilidades principales:
+
+* Almacenar información del usuario autenticado
+* Manejar el rol del usuario (admin o user)
+* Controlar el estado de autenticación
+* Proveer funciones para actualizar el estado (login, logout, cambio de rol)
+
+Este enfoque permite acceder al estado desde cualquier parte de la aplicación sin necesidad de props drilling.
+
+---
+
+## 🧾 Tipos Globales
+
+📄 Ubicación: `src/types/auth.ts`
+
+Se definen tipos reutilizables para mantener consistencia en el manejo de datos.
+
+Beneficios:
+
+* Mejora la legibilidad del código
+* Reduce errores en tiempo de desarrollo
+* Facilita el mantenimiento del proyecto
+
+---
+
+## 🔧 Helper de API
+
+📄 Ubicación: `src/lib/api.ts`
+
+Se implementa una función utilitaria para centralizar las peticiones HTTP.
+
+Responsabilidades:
+
+* Ejecutar peticiones a APIs externas
+* Manejar errores de forma uniforme
+* Evitar duplicación de lógica en múltiples archivos
+
+---
+
+## 🧠 Decisiones Técnicas
+
+* **React Query** se utiliza para el manejo de estado asincrónico y cacheo de datos.
+* **Zustand** se selecciona como solución ligera para el estado global.
+* **TypeScript** garantiza tipado fuerte y mayor confiabilidad.
+* **Separación por capas** (store, services, hooks, lib) para una arquitectura escalable y mantenible.
+
+---
+
+## ✅ Resultado de la Fase
+
+* Configuración global de manejo de datos asincrónicos
+* Estado de autenticación centralizado
+* Estructura de proyecto limpia y organizada
+* Base lista para implementar autenticación, consumo de APIs y lógica de negocio
