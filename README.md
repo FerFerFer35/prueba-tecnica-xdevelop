@@ -1,108 +1,241 @@
-# 🧱 Fase 1 - Configuración Base del Proyecto
+# Prueba Técnica — XDevelop (Next.js App Router)
 
-En esta fase se estableció la arquitectura base del proyecto utilizando **Next.js con App Router**, junto con herramientas modernas para manejo de estado y datos asincrónicos.
-
-El objetivo principal es contar con una base sólida, escalable y organizada que facilite el desarrollo de las siguientes funcionalidades.
-
----
-
-## 📁 Estructura de Carpetas
-
-Ubicación: `src/`
-
-* `app/` → Contiene las rutas de la aplicación (pages y layouts).
-* `components/` → Componentes reutilizables de UI.
-* `hooks/` → Hooks personalizados para lógica reutilizable.
-* `lib/` → Funciones utilitarias y helpers (por ejemplo, manejo de peticiones HTTP).
-* `providers/` → Proveedores globales de la aplicación.
-* `services/` → Funciones encargadas de consumir APIs externas.
-* `store/` → Manejo de estado global con Zustand.
-* `types/` → Definición de tipos globales con TypeScript.
+Aplicación construida con **Next.js (App Router)**, **TypeScript**, **TailwindCSS**, **TanStack Query (React Query)** y **Zustand**.  
+Incluye autenticación (cookies), un BFF interno en `/api`, y pantallas para Users / Posts / Post Detail + Comments.
 
 ---
 
-## ⚙️ Configuración de React Query
+## Stack
+- Next.js **16.2.1**
+- React **19.2.4**
+- TypeScript
+- TailwindCSS **v4**
+- TanStack Query `@tanstack/react-query`
+- TanStack Table `@tanstack/react-table`
+- Zustand
 
-📄 Ubicación: `src/providers/query-provider.tsx`
-
-Se implementa un proveedor global para **React Query**, encargado de gestionar:
-
-* Peticiones asincrónicas
-* Cache de datos
-* Estados de carga, error y éxito
-* Optimización de refetch
-
-Este provider permite centralizar el manejo de datos en toda la aplicación.
+Ver dependencias en `package.json`.
 
 ---
 
-## 🌐 Layout Global
+## Instalación y ejecución
 
-📄 Ubicación: `src/app/layout.tsx`
+### 1) Instalar dependencias
+```bash
+npm install
+```
 
-Archivo principal que envuelve toda la aplicación.
+### 2) Variables de entorno
+Crea `.env.local` (si tu integración con ReqRes/API Key lo requiere):
 
-Aquí se integra el provider de React Query, permitiendo que todos los componentes y páginas tengan acceso a sus funcionalidades.
+```env
+REQRES_API_KEY=...
+REQRES_BASE_URL=https://reqres.in
+```
 
----
+> No subas `.env.local` al repo.
 
-## 🧠 Estado Global (Zustand)
+### 3) Desarrollo
+```bash
+npm run dev
+```
 
-📄 Ubicación: `src/store/auth.store.ts`
+App en:
+- http://localhost:3000
 
-Se define un store global para manejar el estado de autenticación de la aplicación.
+### 4) Build / producción
+```bash
+npm run build
+npm run start
+```
 
-Responsabilidades principales:
-
-* Almacenar información del usuario autenticado
-* Manejar el rol del usuario (admin o user)
-* Controlar el estado de autenticación
-* Proveer funciones para actualizar el estado (login, logout, cambio de rol)
-
-Este enfoque permite acceder al estado desde cualquier parte de la aplicación sin necesidad de props drilling.
-
----
-
-## 🧾 Tipos Globales
-
-📄 Ubicación: `src/types/auth.ts`
-
-Se definen tipos reutilizables para mantener consistencia en el manejo de datos.
-
-Beneficios:
-
-* Mejora la legibilidad del código
-* Reduce errores en tiempo de desarrollo
-* Facilita el mantenimiento del proyecto
+### Scripts disponibles (package.json)
+- `dev`: `next dev`
+- `build`: `next build`
+- `start`: `next start`
+- `lint`: `eslint`
 
 ---
 
-## 🔧 Helper de API
+## Arquitectura del proyecto
 
-📄 Ubicación: `src/lib/api.ts`
+Carpeta base: `src/`
 
-Se implementa una función utilitaria para centralizar las peticiones HTTP.
-
-Responsabilidades:
-
-* Ejecutar peticiones a APIs externas
-* Manejar errores de forma uniforme
-* Evitar duplicación de lógica en múltiples archivos
-
----
-
-## 🧠 Decisiones Técnicas
-
-* **React Query** se utiliza para el manejo de estado asincrónico y cacheo de datos.
-* **Zustand** se selecciona como solución ligera para el estado global.
-* **TypeScript** garantiza tipado fuerte y mayor confiabilidad.
-* **Separación por capas** (store, services, hooks, lib) para una arquitectura escalable y mantenible.
+- `src/app/` → Rutas, layouts y páginas (App Router)
+- `src/app/api/` → Endpoints internos (BFF)
+- `src/components/` → UI por dominio (auth, layout, posts, users, ui)
+- `src/providers/` → Providers globales
+- `src/lib/` → helpers (fetch, utils)
+- `src/store/` → estado global (Zustand)
+- `src/types/` → tipos globales
 
 ---
 
-## ✅ Resultado de la Fase
+## Providers globales (TanStack Query)
 
-* Configuración global de manejo de datos asincrónicos
-* Estado de autenticación centralizado
-* Estructura de proyecto limpia y organizada
-* Base lista para implementar autenticación, consumo de APIs y lógica de negocio
+### `src/providers/query-provider.tsx`
+Provider global que inicializa un `QueryClient` y monta `ReactQueryDevtools`.
+
+- Se usa `useState(() => new QueryClient())` para mantener un único `QueryClient` estable durante el ciclo de vida del cliente.
+- Permite usar `useQuery` / `useMutation` en cualquier componente dentro del árbol.
+
+### `src/app/layout.tsx`
+Envuelve toda la app con `QueryProvider`.
+
+**Importante:** cualquier página/componente que use `useQuery` necesita estar bajo este provider.
+
+---
+
+## Helper de HTTP
+
+### `src/lib/api.ts`
+`fetcher<T>(url)` centraliza el fetch básico:
+
+- Realiza `fetch(url)`
+- Si `!res.ok` lanza error
+- Retorna `res.json()` tipado con genéricos
+
+Uso típico:
+```ts
+const data = await fetcher<MyResponse>('/api/algo')
+```
+
+> Nota: si tu app usa cookies/sesión, usualmente conviene incluir `credentials: 'include'` en algunos fetch. Si en tu proyecto ya lo haces en otros lugares, documéntalo en la sección de Auth.
+
+---
+
+## Autenticación (visión general)
+
+La app incluye un flujo de autenticación típico:
+
+- Pantalla `/login` con formulario (email/password)
+- Endpoints internos `/api/auth/*`
+- El header revisa si el usuario está autenticado para mostrar Login/Logout
+- Rutas protegidas: redirigen a `/login` si no hay sesión
+
+### Endpoints esperados
+(Confirma nombres exactos en tu repo; documenta si difieren)
+
+- `POST /api/auth/login`
+  - Body: `{ email, password }`
+  - Setea cookie(s) de sesión/token
+- `POST /api/auth/logout`
+  - Limpia cookie(s)
+- `GET /api/auth/me`
+  - Retorna estado de sesión: `{ authenticated: boolean, user?: ... }`
+
+### Cómo se usa en UI
+- `LoginForm` hace `fetch('/api/auth/login', { method: 'POST', ... })`
+- `Header` consulta `/api/auth/me` para render condicional (Login/Logout)
+- `Logout` llama `/api/auth/logout` y luego redirige a `/login`
+
+> Recomendación de implementación: cuando se use cookie auth, preferir `fetch(..., { credentials: 'include' })` para que el navegador envíe cookies al BFF.
+
+---
+
+## API interna (BFF) — cómo está organizada
+
+La idea del BFF (`src/app/api/*`) es:
+- Evitar pegarle directo desde el browser a proveedores externos
+- Centralizar headers, API keys, y formateo de respuestas
+- Mantener el frontend consumiendo **solo** `/api/*`
+
+### Users (ReqRes)
+- Endpoint interno: `GET /api/users?page=1`
+- Upstream: `GET https://reqres.in/api/users?page=1`
+- Respuesta: `{ page, per_page, total, total_pages, data: [...] }`
+
+### Posts (JSONPlaceholder)
+- JSONPlaceholder `/posts` devuelve un **array**, sin paginación real.
+- Endpoint interno típico: `GET /api/posts?page=1&limit=10`
+  - Hace fetch a `/posts`
+  - Paginación “simulada” (slice en backend)
+  - Respuesta paginada: `{ page, per_page, total, total_pages, data: Post[] }`
+
+### Post Detail + Comments
+- `GET /api/posts/:id` → post individual
+- `GET /api/posts/:id/comments` → comments array
+  - Upstream ejemplo: `https://jsonplaceholder.typicode.com/posts/3/comments`
+
+---
+
+## UI por módulos (components)
+
+En `src/components/` se organiza UI por dominio:
+
+### `components/ui` (átomos reutilizables)
+Ejemplos típicos:
+- `Button`
+- `InputField`
+- `Pagination`
+- etc.
+
+Objetivo: componentes sin lógica de negocio, reutilizables en posts/users/auth.
+
+### `components/auth`
+- `AuthCard`
+- `LoginForm`
+Objetivo: encapsular UI de autenticación.
+
+### `components/users`
+- Toolbar (búsqueda, filtros, bulk actions)
+- Table (render TanStack Table)
+- helpers (badge/clases, etc.)
+Objetivo: UI específica de la vista de usuarios.
+
+### `components/posts`
+- List item
+- Header
+- Detail header
+- Comments list y comment card
+Objetivo: UI específica para posts y comments.
+
+---
+
+## Data Fetching (TanStack Query)
+
+Se usa `useQuery` para:
+- cache por `queryKey`
+- loading/error states
+- refetch controlado
+- paginación (queryKey incluye page/limit)
+
+Buenas prácticas usadas:
+- `keepPreviousData: true` para que no parpadee al cambiar página
+- `staleTime` para reducir requests repetidos
+
+---
+
+## Estilos (TailwindCSS v4)
+El proyecto usa Tailwind para:
+- Layout consistente
+- Cards, bordes, sombras, spacing
+- estados (hover/focus/disabled)
+- skeletons de loading
+
+---
+
+## Deploy (paso a paso recomendado)
+
+### Opción A: Vercel (recomendado)
+1. Importa el repo en Vercel
+2. Configura variables de entorno (`REQRES_API_KEY`, etc.)
+3. Build command: `npm run build`
+4. Output: Next.js (auto-detect)
+
+Checklist:
+- cookies/session (SameSite/Secure) si aplica
+- endpoints `/api/*` funcionando en prod
+- no exponer API keys en el cliente
+
+---
+
+## Checklist final de QA
+- [ ] Login funciona y setea sesión
+- [ ] Header detecta auth y muestra Login/Logout correctamente
+- [ ] `/users` lista usuarios y pagina (ReqRes)
+- [ ] `/posts` lista posts y pagina (paginación simulada)
+- [ ] `/posts/:id` carga post
+- [ ] `/posts/:id/comments` carga comments
+
+---
