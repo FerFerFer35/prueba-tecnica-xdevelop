@@ -1,7 +1,6 @@
 'use client'
 
 import * as React from 'react'
-import { useQuery } from '@tanstack/react-query'
 import {
     ColumnDef,
     getCoreRowModel,
@@ -12,6 +11,7 @@ import UsersToolbar from '@/components/users/UsersToolbar'
 import UsersTable from '@/components/users/UsersTable'
 import { roleBadgeClass, type Role } from '@/components/users/roleBadge'
 import Button from '@/components/ui/Button'
+import { useQuery, keepPreviousData } from '@tanstack/react-query'
 
 type ReqResUser = {
     id: number
@@ -47,7 +47,7 @@ export default function UsersPage() {
         queryKey: ['reqres-users', page],
         queryFn: () => fetcher<ReqResUsersResponse>(`/api/users?page=${page}`),
         staleTime: 60_000,
-        keepPreviousData: true,
+        placeholderData: keepPreviousData,
     })
 
     const getRole = React.useCallback(

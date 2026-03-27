@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, keepPreviousData } from '@tanstack/react-query'
 import { fetcher } from '@/lib/api'
 import PostsHeader from '@/components/posts/PostsHeader'
 import PostListItem from '@/components/posts/PostListItem'
@@ -30,7 +30,7 @@ export default function PostsPage() {
         queryKey: ['posts', page, limit],
         queryFn: () => fetcher<PostsResponse>(`/api/posts?page=${page}&limit=${limit}`),
         staleTime: 60_000,
-        keepPreviousData: true,
+        placeholderData: keepPreviousData,
     })
 
     if (isLoading) {
