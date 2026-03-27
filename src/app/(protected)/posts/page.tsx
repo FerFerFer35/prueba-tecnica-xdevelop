@@ -59,6 +59,8 @@ export default function PostsPage() {
         )
     }
 
+    if (!data) return null
+
     const totalPages = data.total_pages
     const currentPage = data.page
 
