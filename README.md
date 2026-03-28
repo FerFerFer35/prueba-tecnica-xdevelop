@@ -18,6 +18,23 @@ Ver dependencias en `package.json`.
 
 ---
 
+## Desarrollo asistido por IA (GitHub Copilot + Claude)
+
+Este proyecto fue desarrollado con apoyo de asistentes de IA como parte del flujo de trabajo:
+
+- **GitHub Copilot**: se utilizó para acelerar la escritura de componentes, refactors y utilidades, así como para proponer estructuras de carpetas y snippets repetitivos (UI, TanStack Query/Table, etc.).
+- **Claude**: se utilizó como apoyo para revisión de enfoques, generación de borradores de documentación y verificación de consistencia en decisiones de arquitectura.
+
+### Archivos de guía para agentes
+En el repositorio se incluyen archivos específicos para orientar a herramientas/agents durante el desarrollo:
+
+- `AGENTS.md`: contiene reglas y advertencias para agentes (por ejemplo, cambios/breaking changes de Next.js y la recomendación de revisar la documentación local en `node_modules/next/dist/docs/` antes de escribir código).
+- `CLAUDE.md`: referencia a `AGENTS.md` para mantener consistencia en las reglas aplicadas durante el trabajo asistido por IA.
+
+> Nota: El uso de IA fue **asistido** (no automático). La integración final, decisiones técnicas y validación del comportamiento quedaron a cargo del desarrollador.
+
+---
+
 ## Instalación y ejecución
 
 ### 1) Instalar dependencias
@@ -33,7 +50,7 @@ REQRES_API_KEY=...
 REQRES_BASE_URL=https://reqres.in
 ```
 
-> No subas `.env.local` al repo.
+> Sin la API_KEY no funcionara el proyecto.
 
 ### 3) Desarrollo
 ```bash
