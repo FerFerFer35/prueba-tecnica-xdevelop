@@ -50,7 +50,7 @@ REQRES_API_KEY=...
 REQRES_BASE_URL=https://reqres.in
 ```
 
-> Sin la API_KEY no funcionara el proyecto.
+> Sin la API_KEY no funcionara el proyecto en local.
 
 ### 3) Desarrollo
 ```bash
@@ -117,8 +117,6 @@ Uso típico:
 const data = await fetcher<MyResponse>('/api/algo')
 ```
 
-> Nota: si tu app usa cookies/sesión, usualmente conviene incluir `credentials: 'include'` en algunos fetch. Si en tu proyecto ya lo haces en otros lugares, documéntalo en la sección de Auth.
-
 ---
 
 ## Autenticación (visión general)
@@ -131,7 +129,6 @@ La app incluye un flujo de autenticación típico:
 - Rutas protegidas: redirigen a `/login` si no hay sesión
 
 ### Endpoints esperados
-(Confirma nombres exactos en tu repo; documenta si difieren)
 
 - `POST /api/auth/login`
   - Body: `{ email, password }`
@@ -145,8 +142,6 @@ La app incluye un flujo de autenticación típico:
 - `LoginForm` hace `fetch('/api/auth/login', { method: 'POST', ... })`
 - `Header` consulta `/api/auth/me` para render condicional (Login/Logout)
 - `Logout` llama `/api/auth/logout` y luego redirige a `/login`
-
-> Recomendación de implementación: cuando se use cookie auth, preferir `fetch(..., { credentials: 'include' })` para que el navegador envíe cookies al BFF.
 
 ---
 
