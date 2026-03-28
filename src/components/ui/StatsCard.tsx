@@ -8,6 +8,35 @@ type Props = {
     badge?: string
 }
 
+/**
+ * Componente de tarjeta de estadísticas.
+ *
+ * Renderiza una tarjeta interactiva que funciona como un enlace navegable.
+ * Incluye título, descripción, badge opcional y un llamado a la acción.
+ * Cuenta con animaciones suaves de hover y un efecto de acento sutil.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <StatsCard
+ *   title="Usuarios Activos"
+ *   description="Total de usuarios en el sistema"
+ *   href="/dashboard/users"
+ *   cta="Ver más"
+ *   badge="Pro"
+ * />
+ * ```
+ *
+ * @param {Props} props - Las propiedades del componente
+ * @param {string} props.title - Título principal de la tarjeta
+ * @param {string} props.description - Descripción secundaria de la tarjeta
+ * @param {string} props.href - URL de destino del enlace
+ * @param {string} props.cta - Texto del llamado a la acción
+ * @param {string} [props.badge] - Etiqueta opcional de estado o categoría
+ *
+ * @returns {JSX.Element} Elemento de tarjeta de estadísticas interactiva
+ */
+
 export default function StatsCard({ title, description, href, cta, badge }: Props) {
     return (
         <Link

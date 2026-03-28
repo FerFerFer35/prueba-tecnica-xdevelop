@@ -1,17 +1,16 @@
 'use client'
 
 import * as React from 'react'
-import {
-    ColumnDef,
-    getCoreRowModel,
-    useReactTable,
-} from '@tanstack/react-table'
+import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import { useQuery, keepPreviousData } from '@tanstack/react-query'
+
 import { fetcher } from '@/lib/api'
+import { downloadTextFile, toCsv } from '@/lib/csv'
+
 import UsersToolbar from '@/components/users/UsersToolbar'
 import UsersTable from '@/components/users/UsersTable'
 import { roleBadgeClass, type Role } from '@/components/users/roleBadge'
 import Button from '@/components/ui/Button'
-import { useQuery, keepPreviousData } from '@tanstack/react-query'
 
 type ReqResUser = {
     id: number
@@ -32,6 +31,40 @@ type ReqResUsersResponse = {
 }
 
 type Row = ReqResUser & { role: Role }
+
+/**
+ * Página de gestión de usuarios del sistema.
+ * 
+ * Proporciona una interfaz completa para administrar usuarios incluyendo:
+ * - Visualización paginada de usuarios desde la API ReqRes
+ * - Búsqueda por nombre completo, email o ID
+ * - Filtrado por rol (admin, user o todos)
+ * - Selección múltiple de registros
+ * - Operaciones en lote: eliminar usuarios y cambiar roles
+ * - Exportación de datos a CSV
+ * - Estados simulados de eliminación y cambios de rol (sin persistencia)
+ * 
+ * @component
+ * @returns {React.ReactNode} Página renderizada con tabla de usuarios, filtros y controles
+ * 
+ * @example
+ * // Uso en el enrutador
+ * import UsersPage from '@/app/(protected)/users/page'
+ * 
+ * @remarks
+ * - Los cambios de rol y eliminaciones son simulados en el estado local
+ * - Los datos se cachean durante 60 segundos
+ * - La paginación se controla mediante el estado local de `page`
+ * - Utiliza React Query para la obtención y caché de datos
+ * - Utiliza TanStack React Table para la gestión avanzada de tablas
+ * 
+ * @state
+ * - `page` - Número de página actual
+ * - `search` - Término de búsqueda
+ * - `roleFilter` - Filtro de rol seleccionado
+ * - `deletedIds` - IDs de usuarios marcados como eliminados
+ * - `roleOverrides` - Cambios de rol aplicados
+ */
 
 export default function UsersPage() {
     const [page, setPage] = React.useState(1)
@@ -72,10 +105,28 @@ export default function UsersPage() {
             })
             : base
 
-        return roleFilter === 'all'
-            ? afterSearch
-            : afterSearch.filter((u) => u.role === roleFilter)
+        return roleFilter === 'all' ? afterSearch : afterSearch.filter((u) => u.role === roleFilter)
     }, [data?.data, deletedIds, getRole, roleFilter, search])
+
+    const handleExportCsv = React.useCallback(() => {
+        const csv = toCsv(
+            rows.map((r) => ({
+                id: r.id,
+                fullName: `${r.first_name} ${r.last_name}`,
+                email: r.email,
+                role: r.role,
+            })),
+            [
+                { key: 'id', header: 'ID' },
+                { key: 'fullName', header: 'Nombre' },
+                { key: 'email', header: 'Email' },
+                { key: 'role', header: 'Rol' },
+            ]
+        )
+
+        const filename = `users_page-${page}.csv`
+        downloadTextFile(filename, '\uFEFF' + csv)
+    }, [rows, page])
 
     const columns = React.useMemo<ColumnDef<Row>[]>(
         () => [
@@ -109,9 +160,7 @@ export default function UsersPage() {
             {
                 accessorKey: 'id',
                 header: 'ID',
-                cell: ({ row }) => (
-                    <span className="font-mono text-xs text-zinc-600">{row.original.id}</span>
-                ),
+                cell: ({ row }) => <span className="font-mono text-xs text-zinc-600">{row.original.id}</span>,
             },
             {
                 id: 'user',
@@ -206,12 +255,9 @@ export default function UsersPage() {
     return (
         <div className="mx-auto w-full max-w-6xl px-4 py-10">
             <div className="rounded-2xl border border-zinc-200 bg-white shadow-sm">
-                {/* Header */}
                 <div className="flex flex-col gap-3 border-b border-zinc-200 p-6 sm:flex-row sm:items-end sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-                            Gestión de usuarios
-                        </h1>
+                        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">Gestión de usuarios</h1>
                         <div className="mt-2 text-xs text-zinc-500">
                             {typeof total === 'number' ? <>Total: {total}</> : null}
                             {typeof perPage === 'number' ? <> • per_page: {perPage}</> : null}
@@ -223,10 +269,12 @@ export default function UsersPage() {
                         <Button variant="ghost" onClick={resetSimulatedState}>
                             Reset
                         </Button>
+                        <Button onClick={handleExportCsv} variant="ghost">
+                            Exportar CSV
+                        </Button>
                     </div>
                 </div>
 
-                {/* Toolbar (component) */}
                 <UsersToolbar
                     search={search}
                     onSearchChange={setSearch}
@@ -238,18 +286,15 @@ export default function UsersPage() {
                     onBulkRoleUser={() => bulkSetRole('user')}
                 />
 
-                {/* Table (component) */}
                 <UsersTable
                     table={table}
                     columnsLength={columns.length}
                     emptyText="Sin resultados (por filtros/borrado simulado)."
                 />
 
-                {/* Pagination */}
                 <div className="flex items-center justify-between gap-3 border-t border-zinc-200 p-6">
                     <div className="text-sm text-zinc-600">
-                        Page{' '}
-                        <span className="font-semibold text-zinc-900 tabular-nums">{currentPage}</span> /{' '}
+                        Page <span className="font-semibold text-zinc-900 tabular-nums">{currentPage}</span> /{' '}
                         <span className="font-semibold text-zinc-900 tabular-nums">{totalPages}</span>
                     </div>
 

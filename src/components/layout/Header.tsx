@@ -8,6 +8,33 @@ type MeResponse =
     | { authenticated: false }
     | { authenticated: true; user?: { email?: string; role?: string } }
 
+/**
+ * Componente de encabezado de la aplicación
+ * 
+ * Renderiza la barra de navegación principal con autenticación de usuario.
+ * 
+ * Características:
+ * - Verifica el estado de autenticación del usuario mediante la API `/api/auth/me`
+ * - Muestra el email y rol del usuario autenticado
+ * - Proporciona botón de logout para usuarios autenticados
+ * - Proporciona botón de login para usuarios no autenticados
+ * - Re-valida la autenticación cuando cambia la ruta
+ * - Muestra un skeleton loading mientras se verifica la autenticación
+ * 
+ * Estados:
+ * @state {boolean} isAuth - Indica si el usuario está autenticado
+ * @state {string | null} userEmail - Email del usuario autenticado
+ * @state {string | null} role - Rol del usuario autenticado
+ * @state {boolean} loading - Indica si se está verificando la autenticación
+ * 
+ * Efectos:
+ * - Se ejecuta `checkAuth()` al montar el componente
+ * - Se re-ejecuta `checkAuth()` cuando cambia la ruta (pathname)
+ * 
+ * @component
+ * @returns {JSX.Element} Encabezado con navegación y controles de autenticación
+ */
+
 export default function Header() {
     const router = useRouter()
     const pathname = usePathname()
@@ -42,12 +69,10 @@ export default function Header() {
     }, [])
 
     React.useEffect(() => {
-        // 1) al montar
         checkAuth()
     }, [checkAuth])
 
     React.useEffect(() => {
-        // 2) al cambiar de ruta (por ejemplo después de login/logout)
         checkAuth()
     }, [pathname, checkAuth])
 
@@ -57,7 +82,6 @@ export default function Header() {
             credentials: 'include',
         })
 
-        // no confíes solo en el setState: revalida + navega
         await checkAuth()
         router.push('/login')
         router.refresh()

@@ -19,6 +19,37 @@ type Props = {
     disabled?: boolean
 }
 
+/**
+ * Componente de campo de entrada de texto reutilizable
+ * 
+ * @param label - Etiqueta visible del campo de entrada
+ * @param name - Identificador único del campo (usado en id y name)
+ * @param type - Tipo de entrada HTML (por defecto: 'text')
+ * @param value - Valor actual del campo
+ * @param onChange - Callback ejecutado cuando el valor cambia
+ * @param required - Indica si el campo es obligatorio
+ * @param placeholder - Texto de ayuda mostrado cuando el campo está vacío
+ * @param autoComplete - Atributo de autocompletado del navegador
+ * @param error - Mensaje de error a mostrar (si existe)
+ * @param disabled - Indica si el campo está deshabilitado
+ * 
+ * @returns Componente de entrada con estilos Tailwind, validación y accesibilidad integrada
+ * 
+ * @example
+ * ```tsx
+ * <InputField
+ *   label="Correo electrónico"
+ *   name="email"
+ *   type="email"
+ *   value={email}
+ *   onChange={setEmail}
+ *   placeholder="ejemplo@correo.com"
+ *   error={emailError}
+ *   required
+ * />
+ * ```
+ */
+
 export default function InputField({
     label,
     name,

@@ -22,6 +22,30 @@ type PostsResponse = {
     data: Post[]
 }
 
+/**
+ * Página de listado de posts con paginación.
+ * 
+ * Componente que muestra una lista de posts obtenidos de la API con soporte para paginación.
+ * Implementa estados de carga, error y visualización de datos utilizando React Query.
+ * 
+ * @component
+ * @returns {React.ReactElement} El componente renderizado con la lista de posts paginada,
+ *                               o un skeleton loader durante la carga, o un mensaje de error
+ *                               en caso de fallo en la solicitud.
+ * 
+ * @example
+ * // Uso básico
+ * <PostsPage />
+ * 
+ * @remarks
+ * - Utiliza React Query para gestionar la obtención y caché de datos
+ * - La página se mantiene fresca durante 60 segundos (staleTime)
+ * - Soporta navegación entre páginas con límite de 10 posts por página
+ * - Muestra un skeleton loader mientras carga los datos
+ * - Implementa manejo de errores con mensaje descriptivo
+ * - Utiliza keepPreviousData para mantener datos previos durante la carga de nueva página
+ */
+
 export default function PostsPage() {
     const [page, setPage] = React.useState(1)
     const limit = 10

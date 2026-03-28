@@ -10,6 +10,33 @@ type Post = {
     body: string
 }
 
+/**
+ * Componente de encabezado para la vista detallada de una publicación.
+ * 
+ * Muestra la información principal de una publicación incluyendo su ID, título,
+ * contenido y el ID del usuario que la creó. Incluye un botón para volver a la
+ * vista anterior.
+ * 
+ * @component
+ * @param {Object} props - Las propiedades del componente
+ * @param {Post} props.post - Objeto que contiene los datos de la publicación a mostrar
+ * @param {string} props.post.id - Identificador único de la publicación
+ * @param {string} props.post.title - Título de la publicación
+ * @param {string} props.post.body - Contenido o cuerpo de la publicación
+ * @param {number} props.post.userId - ID del usuario propietario de la publicación
+ * @param {() => void} props.onBack - Función callback que se ejecuta al hacer clic en el botón "Volver"
+ * 
+ * @returns {JSX.Element} Un elemento div que contiene el encabezado con la información de la publicación
+ * 
+ * @example
+ * ```tsx
+ * <PostDetailHeader
+ *   post={{ id: 1, title: "Mi Post", body: "Contenido...", userId: 42 }}
+ *   onBack={() => navigate(-1)}
+ * />
+ * ```
+ */
+
 export default function PostDetailHeader({
     post,
     onBack,

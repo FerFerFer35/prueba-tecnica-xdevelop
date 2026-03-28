@@ -14,6 +14,33 @@ function cx(...classes: Array<string | false | undefined | null>) {
     return classes.filter(Boolean).join(' ')
 }
 
+/**
+ * Componente de botón reutilizable con múltiples variantes y estados.
+ * 
+ * @component
+ * @example
+ * // Botón primario
+ * <Button>Enviar</Button>
+ * 
+ * @example
+ * // Botón de peligro con ancho completo
+ * <Button variant="danger" fullWidth>Eliminar</Button>
+ * 
+ * @example
+ * // Botón en estado de carga
+ * <Button isLoading>Procesando</Button>
+ * 
+ * @param {ButtonVariant} [variant='primary'] - La variante visual del botón: 'primary', 'danger' o 'ghost'
+ * @param {boolean} [fullWidth] - Si es verdadero, el botón ocupará el ancho completo de su contenedor
+ * @param {boolean} [isLoading] - Si es verdadero, muestra el estado de carga y deshabilita el botón
+ * @param {string} [className] - Clases CSS adicionales para personalización
+ * @param {boolean} [disabled] - Si es verdadero, deshabilita el botón
+ * @param {React.ReactNode} children - El contenido del botón
+ * @param {React.ButtonHTMLAttributes<HTMLButtonElement>} props - Propiedades HTML estándar del botón
+ * 
+ * @returns {JSX.Element} Un elemento botón con estilos y comportamientos aplicados
+ */
+
 export default function Button({
     variant = 'primary',
     fullWidth,

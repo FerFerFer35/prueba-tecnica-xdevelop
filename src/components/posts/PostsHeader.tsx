@@ -1,3 +1,15 @@
+/**
+ * Encabezado de la sección de posts que muestra información de paginación y total de registros.
+ * 
+ * @param {Object} props - Propiedades del componente
+ * @param {number} props.total - Número total de posts disponibles
+ * @param {number} props.page - Número de página actual
+ * @param {number} props.totalPages - Número total de páginas
+ * @param {boolean} [props.isFetching] - Indica si se está realizando una petición de datos (opcional)
+ * 
+ * @returns {JSX.Element} Elemento que renderiza el encabezado con información de paginación
+ */
+
 export default function PostsHeader({
     total,
     page,

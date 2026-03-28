@@ -1,5 +1,29 @@
 import { NextResponse } from 'next/server'
 
+/**
+ * Obtiene una lista paginada de usuarios desde la API externa ReqRes.
+ * 
+ * @param {Request} request - Objeto de solicitud que contiene los parámetros de consulta.
+ *                            Acepta el parámetro `page` para la paginación (por defecto: '1').
+ * 
+ * @returns {Promise<NextResponse>} Respuesta JSON con los datos de usuarios paginados.
+ *                                   En caso de error, retorna un objeto con la propiedad
+ *                                   `error` y el código de estado correspondiente.
+ * 
+ * @throws {NextResponse} Retorna estado 500 si falta la variable de entorno `REQRES_API_KEY`.
+ * @throws {NextResponse} Retorna el estado HTTP de la API externa si la solicitud falla.
+ * 
+ * @example
+ * // Solicitud exitosa
+ * GET /api/users?page=1
+ * // Respuesta: { data: [...], page: 1, per_page: 6, total: 12, total_pages: 2 }
+ * 
+ * @example
+ * // Solicitud con error de configuración
+ * GET /api/users
+ * // Respuesta: { error: 'Missing REQRES_API_KEY server config', status: 500 }
+ */
+
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const page = searchParams.get('page') ?? '1'

@@ -2,6 +2,24 @@
 
 import * as React from 'react'
 
+/**
+ * Componente de tarjeta de autenticación que proporciona un contenedor estilizado para formularios de autenticación.
+ * 
+ * @component
+ * @example
+ * ```tsx
+ * <AuthCard title="Iniciar Sesión">
+ *   <LoginForm />
+ * </AuthCard>
+ * ```
+ * 
+ * @param {Object} props - Las propiedades del componente
+ * @param {string} props.title - El título que se muestra en la parte superior de la tarjeta
+ * @param {React.ReactNode} props.children - El contenido hijo que se renderiza dentro de la tarjeta
+ * 
+ * @returns {React.ReactElement} Un elemento de tarjeta estilizado con el título y contenido proporcionado
+ */
+
 export default function AuthCard({
     title,
     children,

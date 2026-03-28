@@ -6,6 +6,32 @@ import AuthCard from '@/components/auth/AuthCard'
 import InputField from '@/components/ui/InputField'
 import Button from '@/components/ui/Button'
 
+/**
+ * Componente de formulario para inicio de sesión.
+ * 
+ * Gestiona el inicio de sesión de usuarios mediante email y contraseña.
+ * Realiza una solicitud POST a `/api/auth/login` y redirige al usuario
+ * al dashboard o a la URL especificada en el parámetro `next` de la consulta.
+ * 
+ * @component
+ * @returns {JSX.Element} Formulario de inicio de sesión con validación de errores
+ * 
+ * @example
+ * ```tsx
+ * <LoginForm />
+ * ```
+ * 
+ * @state {string} email - Email del usuario
+ * @state {string} password - Contraseña del usuario
+ * @state {string} error - Mensaje de error del formulario
+ * @state {boolean} isSubmitting - Indica si el formulario está siendo enviado
+ * 
+ * @function handleSubmit - Gestiona el envío del formulario
+ * @async
+ * @param {React.FormEvent} e - Evento del formulario
+ * @throws {Error} Error de conexión o respuesta inválida del servidor
+ */
+
 export default function LoginForm() {
     const router = useRouter()
     const searchParams = useSearchParams()

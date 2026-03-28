@@ -1,5 +1,26 @@
 import Link from 'next/link'
 
+/**
+ * Página de inicio (Home) del proyecto técnico
+ * 
+ * Componente que renderiza la página principal de la aplicación, mostrando:
+ * - Información del proyecto (Users, Posts & Auth)
+ * - Descripción de las características principales
+ * - Enlaces de navegación (Dashboard y Login)
+ * - Tarjetas descriptivas de funcionalidades:
+ *   - Autenticación con cookies y rutas protegidas
+ *   - Gestión de usuarios desde ReqRes con paginación y filtros
+ *   - Listado de posts desde JSONPlaceholder con comentarios
+ * - Enlaces rápidos a rutas principales
+ * - Stack tecnológico utilizado
+ * 
+ * @returns {JSX.Element} Elemento JSX que representa la página de inicio
+ * 
+ * @example
+ * // Uso en la aplicación Next.js
+ * <Home />
+ */
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-zinc-50">

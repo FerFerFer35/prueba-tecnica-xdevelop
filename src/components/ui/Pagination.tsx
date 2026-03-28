@@ -2,6 +2,32 @@
 
 import * as React from 'react'
 
+/**
+ * Componente de paginación para navegar entre páginas.
+ * 
+ * Muestra el número de página actual y el total de páginas, además de proporcionar
+ * botones para navegar a la página anterior o siguiente.
+ * 
+ * @component
+ * @example
+ * ```tsx
+ * <Pagination
+ *   page={1}
+ *   totalPages={10}
+ *   onPrev={() => setPage(page - 1)}
+ *   onNext={() => setPage(page + 1)}
+ * />
+ * ```
+ * 
+ * @param {Object} props - Las propiedades del componente
+ * @param {number} props.page - Número de página actual (comienza desde 1)
+ * @param {number} props.totalPages - Número total de páginas disponibles
+ * @param {() => void} props.onPrev - Función callback ejecutada al hacer clic en el botón "Anterior"
+ * @param {() => void} props.onNext - Función callback ejecutada al hacer clic en el botón "Siguiente"
+ * 
+ * @returns {JSX.Element} Un elemento div que contiene el indicador de página y los botones de navegación
+ */
+
 export default function Pagination({
     page,
     totalPages,

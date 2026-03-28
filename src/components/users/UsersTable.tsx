@@ -7,6 +7,33 @@ import {
     Table as TanStackTable,
 } from '@tanstack/react-table'
 
+/**
+ * Componente de tabla genérica para mostrar datos de usuarios.
+ * 
+ * @template T - Tipo genérico de datos que contiene la tabla
+ * 
+ * @param {Object} props - Propiedades del componente
+ * @param {TanStackTable<T>} props.table - Instancia de la tabla TanStack configurada
+ * @param {number} props.columnsLength - Cantidad total de columnas en la tabla
+ * @param {string} [props.emptyText='Sin resultados.'] - Mensaje personalizado que se muestra cuando la tabla no tiene datos
+ * 
+ * @returns {JSX.Element} Elemento renderizado de la tabla con estilos de Tailwind CSS
+ * 
+ * @description
+ * Renderiza una tabla responsiva con soporte para scroll horizontal.
+ * Incluye encabezados estilizados y filas con hover effect.
+ * Muestra un mensaje personalizado cuando no hay datos disponibles.
+ * 
+ * @example
+ * ```tsx
+ * <UsersTable 
+ *   table={tableInstance} 
+ *   columnsLength={5}
+ *   emptyText="No hay usuarios disponibles"
+ * />
+ * ```
+ */
+
 export default function UsersTable<T>({
     table,
     columnsLength,

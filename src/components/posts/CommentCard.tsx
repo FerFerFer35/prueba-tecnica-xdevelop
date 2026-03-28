@@ -6,6 +6,34 @@ type Comment = {
     body: string
 }
 
+/**
+ * Componente que renderiza una tarjeta de comentario individual.
+ * 
+ * Muestra la información del comentario incluyendo el nombre del autor,
+ * correo electrónico, identificador único y el cuerpo del comentario.
+ * 
+ * @component
+ * @param {Object} props - Las propiedades del componente
+ * @param {Comment} props.comment - Objeto de comentario que contiene:
+ *   - id: Identificador único del comentario
+ *   - name: Nombre del autor del comentario
+ *   - email: Correo electrónico del autor
+ *   - body: Contenido del comentario
+ * @returns {JSX.Element} Una tarjeta de comentario estilizada con la información del comentario
+ * 
+ * @example
+ * ```tsx
+ * const comment = {
+ *   id: 1,
+ *   name: "Juan Pérez",
+ *   email: "juan@example.com",
+ *   body: "Este es un comentario de ejemplo"
+ * };
+ * 
+ * <CommentCard comment={comment} />
+ * ```
+ */
+
 export default function CommentCard({ comment }: { comment: Comment }) {
     return (
         <li className="rounded-xl border border-zinc-200 bg-white p-4">

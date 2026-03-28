@@ -4,6 +4,36 @@ import * as React from 'react'
 import Button from '@/components/ui/Button'
 import type { Role } from './roleBadge'
 
+/**
+ * Barra de herramientas para la gestión de usuarios.
+ * Proporciona funcionalidades de búsqueda, filtrado por rol y acciones en lote.
+ *
+ * @component
+ * @param {Object} props - Las propiedades del componente
+ * @param {string} props.search - Valor actual del campo de búsqueda
+ * @param {(value: string) => void} props.onSearchChange - Callback ejecutado cuando cambia el valor de búsqueda
+ * @param {Role | 'all'} props.roleFilter - Filtro de rol actualmente seleccionado
+ * @param {(value: Role | 'all') => void} props.onRoleFilterChange - Callback ejecutado cuando cambia el filtro de rol
+ * @param {number} props.selectedCount - Cantidad de usuarios seleccionados
+ * @param {() => void} props.onBulkDelete - Callback para eliminar usuarios seleccionados en lote
+ * @param {() => void} props.onBulkRoleAdmin - Callback para asignar rol de administrador a usuarios seleccionados
+ * @param {() => void} props.onBulkRoleUser - Callback para asignar rol de usuario a usuarios seleccionados
+ *
+ * @returns {JSX.Element} Elemento JSX que renderiza la barra de herramientas de usuarios
+ *
+ * @example
+ * <UsersToolbar
+ *   search={search}
+ *   onSearchChange={setSearch}
+ *   roleFilter={roleFilter}
+ *   onRoleFilterChange={setRoleFilter}
+ *   selectedCount={3}
+ *   onBulkDelete={handleDelete}
+ *   onBulkRoleAdmin={handleRoleAdmin}
+ *   onBulkRoleUser={handleRoleUser}
+ * />
+ */
+
 export default function UsersToolbar({
     search,
     onSearchChange,

@@ -1,5 +1,28 @@
 import StatsCard from '@/components/ui/StatsCard'
 
+/**
+ * Página principal del Dashboard
+ * 
+ * Componente que muestra la pantalla de bienvenida del dashboard después de la autenticación.
+ * Presenta un resumen de las secciones principales disponibles para el usuario autenticado.
+ * 
+ * @component
+ * @returns {JSX.Element} Un elemento main con dos tarjetas de navegación:
+ *                        - Gestión de usuarios (ReqRes con paginación real)
+ *                        - Posts + Comments (JSONPlaceholder con paginación simulada)
+ * 
+ * @example
+ * ```tsx
+ * <DashboardPage />
+ * ```
+ * 
+ * @remarks
+ * - Requiere que el usuario esté autenticado (ruta protegida)
+ * - Los usuarios acceden a ReqRes API para gestión de usuarios
+ * - Los posts utilizan JSONPlaceholder como fuente de datos
+ * - Diseño responsive con Tailwind CSS (mobile-first)
+ */
+
 export default function DashboardPage() {
     return (
         <main className="mx-auto w-full max-w-6xl px-4 py-10">
@@ -36,35 +59,6 @@ export default function DashboardPage() {
                         badge="/posts"
                     />
                 </div>
-
-                {/* <div className="mt-8 grid grid-cols-1 gap-4 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 sm:grid-cols-3 sm:p-5">
-                    <div>
-                        <div className="text-xs font-medium uppercase tracking-wide text-zinc-500">
-                            Seguridad
-                        </div>
-                        <div className="mt-1 text-sm text-zinc-700">
-                            Rutas protegidas por layouts server-side (Next 16).
-                        </div>
-                    </div>
-
-                    <div>
-                        <div className="text-xs font-medium uppercase tracking-wide text-zinc-500">
-                            Datos
-                        </div>
-                        <div className="mt-1 text-sm text-zinc-700">
-                            BFF interno en <span className="font-mono text-xs">/api</span> (no exponemos API keys).
-                        </div>
-                    </div>
-
-                    <div>
-                        <div className="text-xs font-medium uppercase tracking-wide text-zinc-500">
-                            UI
-                        </div>
-                        <div className="mt-1 text-sm text-zinc-700">
-                            Componentes reutilizables (Atomic: ui/auth/layout/users/posts).
-                        </div>
-                    </div>
-                </div> */}
             </div>
         </main>
     )

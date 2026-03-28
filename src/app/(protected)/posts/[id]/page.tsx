@@ -22,6 +22,32 @@ type Comment = {
     body: string
 }
 
+/**
+ * Página de detalle de una publicación.
+ * 
+ * Renderiza los detalles de una publicación específica junto con sus comentarios.
+ * Obtiene la información de la publicación y comentarios desde la API mediante consultas de React Query.
+ * 
+ * @component
+ * @returns {JSX.Element} La página renderizada que contiene:
+ *   - Mensaje de error si el ID de la publicación es inválido
+ *   - Esqueleto de carga mientras se obtienen los datos
+ *   - Mensaje de error si falla la carga de la publicación
+ *   - Mensaje de error si falla la carga de los comentarios
+ *   - Detalle de la publicación y lista de comentarios cuando los datos están listos
+ * 
+ * @remarks
+ * - Utiliza el hook `useRouter` para navegar hacia atrás
+ * - Utiliza el hook `useParams` para obtener el ID de la publicación de los parámetros dinámicos
+ * - Realiza dos consultas independientes: una para la publicación y otra para los comentarios
+ * - Las consultas se deshabilitan si el ID no es un número válido o es menor o igual a 0
+ * - Los datos se cachean durante 60 segundos (staleTime)
+ * 
+ * @example
+ * // La página se accede mediante la ruta: /posts/[id]
+ * // Ejemplo: /posts/123
+ */
+
 export default function PostDetailPage() {
     const router = useRouter()
     const params = useParams<{ id: string }>()
