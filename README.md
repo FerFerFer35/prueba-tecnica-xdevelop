@@ -246,13 +246,3 @@ Checklist:
 - no exponer API keys en el cliente
 
 ---
-
-## Checklist final de QA
-- [ ] Login funciona y setea sesión
-- [ ] Header detecta auth y muestra Login/Logout correctamente
-- [ ] `/users` lista usuarios y pagina (ReqRes)
-- [ ] `/posts` lista posts y pagina (paginación simulada)
-- [ ] `/posts/:id` carga post
-- [ ] `/posts/:id/comments` carga comments
-
----
