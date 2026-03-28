@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { createRefreshSession } from '@/lib/server/session-store'
-import { LOCAL_USERS } from '@/data/local-users'
 
 type Role = 'admin' | 'user'
 
@@ -18,14 +17,14 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Invalid credentials' }, { status: 400 })
     }
 
-    // Access token simulado (lo pide la prueba en cookie accesible por JS)
+    // Access token simulado (cookie accesible por JS)
     const accessToken = crypto.randomUUID()
 
-    // Refresh token real (in-memory) para poder hacer refresh
+    // Refresh token in-memory (para refresh)
     const session = createRefreshSession({ email: found.email, role: found.role })
 
-    const cookieStore = await cookies() // <-- NO await
-    // <-- NO await
+    // ✅ NO va con await
+    const cookieStore = await cookies()
 
     cookieStore.set('accessToken', accessToken, {
         httpOnly: false,
@@ -41,7 +40,6 @@ export async function POST(request: Request) {
         path: '/',
     })
 
-    // opcional: útil para hidratar Zustand
     cookieStore.set('role', found.role, {
         httpOnly: false,
         sameSite: 'lax',

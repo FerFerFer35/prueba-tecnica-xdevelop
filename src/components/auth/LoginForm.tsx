@@ -1,20 +1,21 @@
 'use client'
 
 import * as React from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import AuthCard from '@/components/auth/AuthCard'
 import InputField from '@/components/ui/InputField'
 import Button from '@/components/ui/Button'
 
 export default function LoginForm() {
     const router = useRouter()
+    const searchParams = useSearchParams()
 
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [error, setError] = React.useState('')
     const [isSubmitting, setIsSubmitting] = React.useState(false)
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         setError('')
 
@@ -35,8 +36,9 @@ export default function LoginForm() {
                 return
             }
 
+            const next = searchParams.get('next') || '/dashboard'
             router.refresh()
-            router.push('/dashboard')
+            router.push(next)
         } catch {
             setError('Error de conexión')
         } finally {
@@ -61,7 +63,7 @@ export default function LoginForm() {
                     onChange={setEmail}
                     required
                     autoComplete="email"
-                    placeholder="tu@email.com"
+                    placeholder="admin@demo.com"
                     disabled={isSubmitting}
                 />
 
@@ -73,7 +75,7 @@ export default function LoginForm() {
                     onChange={setPassword}
                     required
                     autoComplete="current-password"
-                    placeholder="••••••••"
+                    placeholder="admin123"
                     disabled={isSubmitting}
                 />
 
