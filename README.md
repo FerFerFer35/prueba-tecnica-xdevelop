@@ -231,18 +231,3 @@ El proyecto usa Tailwind para:
 - skeletons de loading
 
 ---
-
-## Deploy (paso a paso recomendado)
-
-### Opción A: Vercel (recomendado)
-1. Importa el repo en Vercel
-2. Configura variables de entorno (`REQRES_API_KEY`, etc.)
-3. Build command: `npm run build`
-4. Output: Next.js (auto-detect)
-
-Checklist:
-- cookies/session (SameSite/Secure) si aplica
-- endpoints `/api/*` funcionando en prod
-- no exponer API keys en el cliente
-
----
