@@ -104,6 +104,9 @@ export default function Header() {
                     <Link className="hover:text-gray-900" href="/posts">
                         Posts
                     </Link>
+                    <Link className="hover:text-gray-900" href="/foods">
+                        Foods
+                    </Link>
                 </nav>
 
                 <div className="flex items-center gap-3">

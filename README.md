@@ -48,9 +48,11 @@ Crea `.env.local` (si tu integración con ReqRes/API Key lo requiere):
 ```env
 REQRES_API_KEY=...
 REQRES_BASE_URL=https://reqres.in
+USDA_API_KEY=...
 ```
 
-> Sin la API_KEY no funcionara el proyecto en local.
+> Sin la API_KEY de ReqRes no funcionará el proyecto en local.
+> La USDA_API_KEY es necesaria para la sección de alimentos. Puedes obtener una gratis en https://fdc.nal.usda.gov/api-key-signup
 
 ### 3) Desarrollo
 ```bash
@@ -169,6 +171,15 @@ La idea del BFF (`src/app/api/*`) es:
 - `GET /api/posts/:id/comments` → comments array
   - Upstream ejemplo: `https://jsonplaceholder.typicode.com/posts/3/comments`
 
+### Foods (USDA FoodData Central)
+- Endpoint interno de búsqueda: `GET /api/foods?query=apple&page=1&pageSize=10`
+  - Upstream: `GET https://api.nal.usda.gov/fdc/v1/foods/search`
+  - Respuesta paginada: `{ query, page, per_page, total, total_pages, data: FoodSearchItem[] }`
+- Endpoint interno de detalle: `GET /api/foods/:fdcId`
+  - Upstream: `GET https://api.nal.usda.gov/fdc/v1/food/:fdcId`
+  - Respuesta: `{ fdcId, description, dataType, foodNutrients: [...] }`
+- Requiere variable de entorno `USDA_API_KEY`
+
 ---
 
 ## UI por módulos (components)
@@ -201,6 +212,14 @@ Objetivo: UI específica de la vista de usuarios.
 - Detail header
 - Comments list y comment card
 Objetivo: UI específica para posts y comments.
+
+### `components/foods`
+- `FoodSearchBar` — Barra de búsqueda con formulario
+- `FoodsHeader` — Encabezado con info de búsqueda y paginación
+- `FoodListItem` — Elemento de la lista con nutrientes básicos
+- `FoodDetailHeader` — Header del detalle con datos principales
+- `NutrientsList` — Tabla de información nutricional completa
+Objetivo: UI específica para búsqueda y detalle de alimentos USDA.
 
 ---
 
