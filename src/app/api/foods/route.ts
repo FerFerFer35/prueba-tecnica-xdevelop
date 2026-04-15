@@ -83,13 +83,16 @@ export async function GET(request: Request) {
 
     const raw = (await upstream.json()) as UpstreamSearchResponse
 
+    // Limit to top 5 nutrients in search results to keep payload small
+    const MAX_SEARCH_NUTRIENTS = 5
+
     const data = (raw.foods ?? []).map((f) => ({
         fdcId: f.fdcId,
         description: f.description,
         dataType: f.dataType ?? '',
         brandOwner: f.brandOwner ?? undefined,
         ingredients: f.ingredients ?? undefined,
-        foodNutrients: (f.foodNutrients ?? []).slice(0, 5).map((n) => ({
+        foodNutrients: (f.foodNutrients ?? []).slice(0, MAX_SEARCH_NUTRIENTS).map((n) => ({
             nutrientId: n.nutrientId ?? 0,
             nutrientName: n.nutrientName ?? '',
             nutrientNumber: n.nutrientNumber ?? '',

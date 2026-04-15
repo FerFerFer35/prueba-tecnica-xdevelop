@@ -28,7 +28,7 @@ export default function FoodSearchBar({
     }
 
     return (
-        <form onSubmit={handleSubmit} className="flex gap-2 p-6 border-b border-zinc-200">
+        <form onSubmit={handleSubmit} className="flex gap-2 border-b border-zinc-200 p-6">
             <input
                 type="text"
                 value={input}
